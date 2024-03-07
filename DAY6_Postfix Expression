@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX_SIZE 100
+
+// Stack implementation
+typedef struct {
+    int top;
+    int items[MAX_SIZE];
+} Stack;
+
+void push(Stack *s, int value) {
+    if (s->top == MAX_SIZE - 1) {
+        printf("Stack Overflow\n");
+        exit(1);
+    }
+    s->items[++(s->top)] = value;
+}
+
+int pop(Stack *s) {
+    if (s->top == -1) {
+        printf("Stack Underflow\n");
+        exit(1);
+    }
+    return s->items[(s->top)--];
+}
+
+int evaluatePostfix(char *expression) {
+    Stack stack;
+    stack.top = -1;
+
+    int i, operand1, operand2, result;
+    char ch;
+
+    for (i = 0; expression[i] != '\0'; i++) {
+        ch = expression[i];
+
+        if (isdigit(ch)) {
+            push(&stack, ch - '0');
+        } else {
+            operand2 = pop(&stack);
+            operand1 = pop(&stack);
+
+            switch (ch) {
+                case '+':
+                    result = operand1 + operand2;
+                    break;
+                case '-':
+                    result = operand1 - operand2;
+                    break;
+                case '*':
+                    result = operand1 * operand2;
+                    break;
+                case '/':
+                    result = operand1 / operand2;
+                    break;
+                default:
+                    printf("Invalid operator\n");
+                    exit(1);
+            }
+
+            push(&stack, result);
+        }
+    }
+
+    return pop(&stack);
+}
+
+int main() printf("sai_192311187\n");
+    char expression[] = "44 2 / 6 -";
+    int result = evaluatePostfix(expression);
+    printf("Result: %d\n", result);
+
+    return 0;
+}
